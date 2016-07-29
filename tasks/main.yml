@@ -1,0 +1,79 @@
+---
+
+# opencv 3.1.0-dev (as of 07.29.2016)
+# Based on http://docs.opencv.org/trunk/d7/d9f/tutorial_linux_install.html
+
+- name: Install Python pip
+  apt: name=python-pip state=present update_cache=yes
+
+- name: compiler package
+  apt: name=build-essential state=present
+
+- name: required packages
+  apt: name={{ item }} state=present
+  with_items:
+  - cmake
+  - git
+  - libgtk2.0-dev
+  - pkg-config
+  - libavcodec-dev
+  - libavformat-dev
+  - libswscale-dev
+
+- name: optional packages
+  apt: name={{ item }} state=present
+  with_items:
+  - python-dev
+  - python-numpy
+  - libtbb2
+  - libtbb-dev
+  - libjpeg-dev
+  - libpng-dev
+  - libtiff-dev
+  - libjasper-dev
+  - libdc1394-22-dev
+
+- name: Create a working directory
+  file: name={{ working_dir }} state=directory mode=0755
+
+- name: git clone opencv (dev)
+  git: repo={{ opencv_repo }}
+       dest={{ opencv_dest }}
+  when: stable_or_dev == "dev"
+
+- name: download opencv (stable)
+  unarchive: src={{ opencv_zip }} dest={{ working_dir }} copy=no
+  when: stable_or_dev == "stable"
+
+- name: git clone opencv_contrib (dev)
+  git: repo={{ opencv_contrib_repo }}
+       dest={{ opencv_contrib_dest }}
+  when: stable_or_dev == "dev"
+
+- name: git clone opencv_contrib (stable)
+  unarchive: src={{ opencv_contrib_zip }} dest={{ working_dir }} copy=no
+  when: stable_or_dev == "stable"
+
+- name: remove build if exists
+  file: name={{ opencv_build }} state=absent
+
+- name: Create build directory
+  file: name={{ opencv_build }} state=directory
+
+- name: Make the opencv build artifacts
+  shell: cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D OPENCV_EXTRA_MODULES_PATH={{ opencv_contrib_modules }} -D BUILD_EXAMPLES=ON ..
+  args:
+    chdir: "{{ opencv_build }}"
+
+- name: Compile opencv
+  shell: make -j{{ num_of_jobs }}
+  args:
+    chdir: "{{ opencv_build }}"
+
+- name: Install opencv
+  shell: make install
+  args:
+    chdir: "{{ opencv_build }}"
+
+
+
