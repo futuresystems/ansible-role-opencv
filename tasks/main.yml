@@ -3,11 +3,8 @@
 # opencv 3.1.0-dev (as of 07.29.2016)
 # Based on http://docs.opencv.org/trunk/d7/d9f/tutorial_linux_install.html
 
-- name: Install Python pip
-  apt: name=python-pip state=present update_cache=yes
-
 - name: compiler package
-  apt: name=build-essential state=present
+  apt: name=build-essential state=present update_cache=yes
 
 - name: required packages
   apt: name={{ item }} state=present
