@@ -4,14 +4,14 @@
 stable_or_dev: dev
 opencv_version: 3.1.0
 opencv_org: https://github.com/opencv
-opencv_repo: {{ opencv_org }}/opencv.git
-opencv_zip: {{ opencv_org }}/opencv/archive/{{ opencv_version }}.zip
-opencv_contrib_repo: {{ opencv_org }}/opencv_contrib.git
-opencv_contrib_zip: {{ opencv_org }}/opencv_contrib/archive/{{ opencv_version }}.zip
-opencv_dest: {{ working_dir }}/opencv
-opencv_contrib_dest: {{ working_dir }}/opencv_contrib
-opencv_build: {{ opencv_dest }}/build
-opencv_contrib_modules: {{ opencv_contrib_dest }}/modules
+opencv_repo: "{{ opencv_org }}/opencv.git"
+opencv_zip: "{{ opencv_org }}/opencv/archive/{{ opencv_version }}.zip"
+opencv_contrib_repo: "{{ opencv_org }}/opencv_contrib.git"
+opencv_contrib_zip: "{{ opencv_org }}/opencv_contrib/archive/{{ opencv_version }}.zip"
+opencv_dest: "{{ working_dir }}/opencv"
+opencv_contrib_dest: "{{ working_dir }}/opencv_contrib"
+opencv_build: "{{ opencv_dest }}/build"
+opencv_contrib_modules: "{{ opencv_contrib_dest }}/modules"
 
 working_dir: /tmp
 
